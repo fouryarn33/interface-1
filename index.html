@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quantum Core | Tech Interface</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep:   #0a0a1a;
+  --bg-mid:    #0f0f2a;
+  --quantum:   #00ccff;
+  --quantum2:  #0066ff;
+  --neon:      #00ffaa;
+  --purple:    #aa00ff;
+  --pink:      #ff00aa;
+  --text:      #ffffff;
+  --dim:       rgba(255,255,255,0.7);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0a0a2a 0%, #050518 100%);
+}
+
+/* Quantum grid background */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 204, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 204, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: perspective(500px) rotateX(60deg);
+  transform-origin: top;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+/* Floating particles */
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--quantum);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--quantum);
+  animation: particleFloat 15s infinite;
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(100vh) translateX(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(100px) scale(0); opacity: 0; }
+}
+
+nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 60px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--quantum), var(--neon));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  animation: logoSpin 4s linear infinite;
+}
+
+@keyframes logoSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--dim);
+  transition: 0.3s;
+  position: relative;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--quantum);
+  text-shadow: 0 0 10px var(--quantum);
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--quantum), var(--neon));
+  box-shadow: 0 0 10px var(--quantum);
+}
+
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 20px 60px;
+  gap: 60px;
+}
+
+.copy {
+  flex: 0 0 450px;
+}
+
+.copy h1 {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--quantum), var(--neon));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.copy p {
+  color: var(--dim);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  max-width: 380px;
+}
+
+.cta-row {
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  padding: 14px 32px;
+  cursor: pointer;
+  transition: 0.3s;
+  letter-spacing: 0.05em;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--quantum), var(--neon));
+  color: #000;
+  box-shadow: 0 0 30px rgba(0, 204, 255, 0.5);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0, 255, 170, 0.6);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--quantum);
+  border: 1px solid var(--quantum);
+  box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+}
+
+.btn-outline:hover {
+  background: rgba(0, 204, 255, 0.1);
+  border-color: var(--neon);
+  color: var(--neon);
+}
+
+/* 3D Quantum Visual */
+.visual {
+  flex: 1;
+  height: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantum-scene {
+  width: 500px;
+  height: 500px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: sceneRotate 20s linear infinite;
+}
+
+@keyframes sceneRotate {
+  from { transform: rotateY(0deg) rotateX(10deg); }
+  to { transform: rotateY(360deg) rotateX(10deg); }
+}
+
+/* Quantum Core */
+.core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0, 255, 170, 0.8), rgba(0, 102, 255, 0.3));
+  border-radius: 50%;
+  box-shadow: 0 0 100px var(--quantum);
+  animation: corePulse 2s ease-in-out infinite;
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+}
+
+/* Orbiting Qubits */
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  animation: orbitRotate 8s linear infinite;
+}
+
+.orbit-1 { width: 300px; height: 300px; animation-duration: 8s; }
+.orbit-2 { width: 400px; height: 400px; animation-duration: 12s; animation-direction: reverse; }
+.orbit-3 { width: 500px; height: 500px; animation-duration: 16s; }
+
+@keyframes orbitRotate {
+  from { transform: translate(-50%, -50%) rotateY(0deg) rotateX(0deg); }
+  to { transform: translate(-50%, -50%) rotateY(360deg) rotateX(360deg); }
+}
+
+.qubit {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--quantum);
+  border-radius: 50%;
+  box-shadow: 0 0 30px var(--quantum);
+  transform-style: preserve-3d;
+}
+
+.qubit-1 { top: -10px; left: 50%; }
+.qubit-2 { bottom: -10px; left: 50%; }
+.qubit-3 { left: -10px; top: 50%; }
+.qubit-4 { right: -10px; top: 50%; }
+
+/* Quantum Gates */
+.gate {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--quantum);
+  background: rgba(0, 204, 255, 0.1);
+  transform-style: preserve-3d;
+  animation: gateFloat 4s ease-in-out infinite;
+}
+
+.gate-1 {
+  top: 20%;
+  left: 20%;
+  transform: translateZ(100px) rotateX(45deg) rotateY(45deg);
+  animation-delay: -1s;
+}
+
+.gate-2 {
+  bottom: 20%;
+  right: 20%;
+  transform: translateZ(150px) rotateX(-45deg) rotateY(30deg);
+  animation-delay: -2s;
+}
+
+.gate-3 {
+  top: 30%;
+  right: 25%;
+  transform: translateZ(80px) rotateY(60deg) rotateX(20deg);
+  animation-delay: -3s;
+}
+
+@keyframes gateFloat {
+  0%, 100% { transform: translateZ(100px) rotateX(45deg) rotateY(45deg) translateY(0); }
+  50% { transform: translateZ(120px) rotateX(50deg) rotateY(50deg) translateY(-15px); }
+}
+
+/* Quantum Entanglement Lines */
+.entanglement {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--quantum), transparent);
+  transform-style: preserve-3d;
+  opacity: 0.3;
+}
+
+/* Floating Numbers */
+.float-number {
+  position: absolute;
+  color: rgba(0, 255, 170, 0.3);
+  font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  transform-style: preserve-3d;
+  animation: numberFloat 6s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+@keyframes numberFloat {
+  0%, 100% { transform: translateZ(50px) translateY(0); opacity: 0.3; }
+  50% { transform: translateZ(80px) translateY(-20px); opacity: 0.8; }
+}
+
+/* Stats */
+.stats {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  gap: 20px;
+  z-index: 20;
+}
+
+.stat-item {
+  background: rgba(0, 204, 255, 0.1);
+  border: 1px solid rgba(0, 204, 255, 0.3);
+  padding: 15px 25px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--neon);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  nav { padding: 20px 30px; }
+  .content { flex-direction: column; padding: 20px 30px; }
+  .copy { max-width: 100%; flex: unset; }
+  .visual { width: 100%; height: 400px; }
+  .quantum-scene { transform: scale(0.7); }
+}
+</style>
+</head>
+<body>
+<section class="hero">
+  <!-- Background elements -->
+  <div class="grid-bg"></div>
+  <div class="particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: -2s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: -5s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: -1s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: -7s;"></div>
+  </div>
+
+  <nav>
+    <div class="logo">
+      <div class="logo-icon"></div>
+      QUANTUM<span style="color: var(--neon);">CORE</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Quantum</a></li>
+      <li><a href="#">Qubits</a></li>
+      <li><a href="#">Algorithms</a></li>
+      <li><a href="#">Research</a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+    <div class="copy">
+      <h1>
+        <span class="gradient-text">Quantum</span><br>
+        Computing<br>
+        Platform
+      </h1>
+      <p>Harness the power of quantum superposition and entanglement with our next-generation quantum processing unit. 100+ qubits at your fingertips.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary">Initialize QPU</button>
+        <button class="btn btn-outline">View Documentation</button>
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="quantum-scene">
+        <!-- Core -->
+        <div class="core"></div>
+        
+        <!-- Orbiting Qubits -->
+        <div class="orbit orbit-1">
+          <div class="qubit qubit-1"></div>
+          <div class="qubit qubit-2"></div>
+          <div class="qubit qubit-3"></div>
+          <div class="qubit qubit-4"></div>
+        </div>
+        
+        <div class="orbit orbit-2">
+          <div class="qubit qubit-1" style="background: var(--neon); box-shadow: 0 0 30px var(--neon);"></div>
+          <div class="qubit qubit-2" style="background: var(--neon);"></div>
+          <div class="qubit qubit-3" style="background: var(--neon);"></div>
+          <div class="qubit qubit-4" style="background: var(--neon);"></div>
+        </div>
+        
+        <div class="orbit orbit-3">
+          <div class="qubit qubit-1" style="background: var(--purple); box-shadow: 0 0 30px var(--purple);"></div>
+          <div class="qubit qubit-2" style="background: var(--purple);"></div>
+          <div class="qubit qubit-3" style="background: var(--purple);"></div>
+          <div class="qubit qubit-4" style="background: var(--purple);"></div>
+        </div>
+
+        <!-- Quantum Gates -->
+        <div class="gate gate-1"></div>
+        <div class="gate gate-2"></div>
+        <div class="gate gate-3"></div>
+
+        <!-- Floating Numbers (quantum states) -->
+        <div class="float-number" style="top: 30%; left: 20%; transform: translateZ(50px);">|0⟩</div>
+        <div class="float-number" style="top: 60%; right: 25%; transform: translateZ(80px); animation-delay: -2s;">|1⟩</div>
+        <div class="float-number" style="bottom: 25%; left: 30%; transform: translateZ(120px); animation-delay: -4s;">|+⟩</div>
+        <div class="float-number" style="top: 40%; right: 30%; transform: translateZ(150px); animation-delay: -1s;">|-⟩</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-value">128</div>
+      <div class="stat-label">Qubits</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">99.9%</div>
+      <div class="stat-label">Fidelity</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">2ms</div>
+      <div class="stat-label">Coherence</div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
